@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="palette1">#D62982</color>
+    <color name="fadedpalette1">#AFD62982</color>
+    <color name="palette2">#9D4D76</color>
+    <color name="fadedpalette2">#AF9D4D76</color>
+    <color name="palette3">#D669A1</color>
+    <color name="fadedpalette3">#AFD669A1</color>
+    <color name="palette4">#571035</color>
+    <color name="fadedpalette4">#AF571035</color>
+    <color name="palette5">#8A1A54</color>
+    <color name="fadedpalette5">#AF8A1A54</color>
+    <color name="fadedwhite">#8FFFFFFF</color>
+
+</resources>

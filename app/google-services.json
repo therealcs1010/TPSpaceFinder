@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "900220890314",
+    "firebase_url": "https://tpspacefinder-3afc3.firebaseio.com",
+    "project_id": "tpspacefinder-3afc3",
+    "storage_bucket": "tpspacefinder-3afc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:900220890314:android:5ae9b3481558ffdc4d5833",
+        "android_client_info": {
+          "package_name": "orbital.gns.tpspacefinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "900220890314-615d5bu0cnsn1t5050gmgn787oabs0b3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "orbital.gns.tpspacefinder",
+            "certificate_hash": "8b95bbc95e87e1a8def2cdcf62e22a6e9b370d16"
+          }
+        },
+        {
+          "client_id": "900220890314-hf1n0rvpsd7l1j7ohoji2vs7rclddp82.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDj4yHwAU5jSHcAX8QIyVS1S_1A_sB5YIw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "900220890314-hf1n0rvpsd7l1j7ohoji2vs7rclddp82.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

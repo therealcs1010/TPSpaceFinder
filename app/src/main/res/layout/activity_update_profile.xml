@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.UpdateProfileActivity"
+    android:background="@color/palette1">
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/btn_dialog" />
+
+    <TextView
+        android:id="@+id/profileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="Profile"
+        android:textAlignment="center"
+        android:textColor="@color/palette2"
+        android:textSize="45sp"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:background="@drawable/circularsidepink"
+        android:text="Update"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toEndOf="@+id/profileButton"
+        app:layout_constraintTop_toTopOf="@+id/profileButton" />
+
+
+    <TextView
+        android:id="@+id/nameColumn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="16dp"
+        android:gravity="center"
+        android:text="Full name"
+        android:textAlignment="viewEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/nameField" />
+
+    <TextView
+        android:id="@+id/emailColumn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Email"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toStartOf="@+id/emailField"
+        app:layout_constraintStart_toStartOf="@+id/nameColumn"
+        app:layout_constraintTop_toBottomOf="@+id/nameColumn" />
+
+    <TextView
+        android:id="@+id/passwordColumn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Password"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toStartOf="@+id/emailField"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/nameColumn"
+        app:layout_constraintTop_toBottomOf="@+id/emailColumn" />
+
+    <TextView
+        android:id="@+id/genderColumn"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Gender"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toStartOf="@+id/emailField"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/nameColumn"
+        app:layout_constraintTop_toBottomOf="@+id/passwordColumn" />
+
+    <EditText
+        android:id="@+id/nameField"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:background="#00000000"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:inputType="textPersonName"
+        android:paddingEnd="5dp"
+        android:textAlignment="viewEnd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/nameColumn"
+        app:layout_constraintTop_toBottomOf="@+id/profileButton"
+        tools:text="Lorem Ipsum" />
+
+    <EditText
+        android:id="@+id/emailField"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:background="#00000000"
+        android:ems="10"
+        android:gravity="center_vertical"
+        android:inputType="textEmailAddress"
+        android:paddingEnd="5dp"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/emailColumn"
+        app:layout_constraintEnd_toEndOf="@+id/nameField"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/nameField"
+        app:layout_constraintTop_toBottomOf="@+id/nameField"
+        tools:text="loremipsum@gmail.com" />
+
+    <EditText
+        android:id="@+id/passwordField"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:paddingEnd="5dp"
+        android:text="******"
+        android:textAlignment="viewEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordColumn"
+        app:layout_constraintEnd_toEndOf="@+id/emailField"
+        app:layout_constraintStart_toEndOf="@+id/passwordColumn"
+        app:layout_constraintTop_toTopOf="@+id/passwordColumn" />
+
+    <ToggleButton
+        android:id="@+id/genderButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="#00000000"
+        android:paddingEnd="5dp"
+        android:text="ToggleButton"
+        android:textAlignment="viewEnd"
+        android:textOff="M"
+        android:textOn="F"
+        app:layout_constraintBottom_toBottomOf="@+id/genderColumn"
+        app:layout_constraintEnd_toEndOf="@+id/passwordField"
+        app:layout_constraintStart_toEndOf="@+id/genderColumn"
+        app:layout_constraintTop_toTopOf="@+id/genderColumn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
