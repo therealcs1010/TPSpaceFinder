@@ -1,16 +1,20 @@
 package orbital.gns.tpspacefinder.Classes;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class User implements Serializable {
 
     private String username, email, password, gender;
+    public HashSet<String> favouriteLocations;
 
     public User(String username, String email, String password, String gender) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.gender = gender;
+        this.favouriteLocations = new HashSet<>();
     }
 
     public User() {
@@ -48,4 +52,6 @@ public class User implements Serializable {
     public void setUsername(String username) {
         this.username = username;
     }
+
+
 }

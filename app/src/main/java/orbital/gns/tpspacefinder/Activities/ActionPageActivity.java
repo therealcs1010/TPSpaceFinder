@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -44,7 +43,7 @@ public class ActionPageActivity extends AppCompatActivity {
                     .addSubMenu(R.color.fadedpalette1, R.drawable.location)
                     .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
                     .addSubMenu(R.color.fadedpalette3, R.drawable.search)
-                    .addSubMenu(R.color.fadedpalette4, R.drawable.crowd)
+                    .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
                     .addSubMenu(R.color.fadedpalette5, R.drawable.profile)
                     .setOnMenuSelectedListener(new OnMenuSelectedListener() {
                         @Override
@@ -62,7 +61,7 @@ public class ActionPageActivity extends AppCompatActivity {
                                 transitToOtherActivity(SearchBarActivity.class);
 //                            Crowd Checker
                             } else if (index == 3) {
-                                transitToOtherActivity(CrowdActivity.class);
+                                transitToOtherActivity(FavouritesActivity.class);
                             } else if (index == 4) {
                                 Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
                                 intent.putExtra("userInfo", myUser);

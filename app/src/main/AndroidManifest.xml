@@ -9,14 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.SearchBarActivity"></activity>
-        <activity android:name=".Activities.CrowdActivity"></activity>
+        <activity android:name=".Activities.FavouritesActivity"></activity>
+        <activity android:name=".Activities.SearchBarActivity" />
+        <activity android:name=".Activities.CrowdActivity" />
         <activity android:name=".Activities.ActionPageActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activities.SeatSelectionActivity" />
         <activity android:name=".Activities.QRCodeActivity" />
@@ -25,7 +26,7 @@
         <activity android:name=".Activities.UpdateProfileActivity" />
         <activity android:name=".Activities.MapActivity" />
         <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.StartActivity"></activity>
+        <activity android:name=".Activities.StartActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
