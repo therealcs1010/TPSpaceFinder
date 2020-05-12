@@ -30,7 +30,6 @@ public class ActionPageActivity extends AppCompatActivity {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-
         if (user == null) {
             Intent intent = new Intent(this, StartActivity.class);
             Log.d("debug", "User not authenticated");
@@ -40,7 +39,6 @@ public class ActionPageActivity extends AppCompatActivity {
         } else {
             CircleMenu circleMenu = findViewById(R.id.circleMenu);
             circleMenu.setMainMenu(R.color.fadedwhite, R.drawable.menu, R.drawable.menu)
-                    .addSubMenu(R.color.fadedpalette1, R.drawable.location)
                     .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
                     .addSubMenu(R.color.fadedpalette3, R.drawable.search)
                     .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
@@ -48,26 +46,22 @@ public class ActionPageActivity extends AppCompatActivity {
                     .setOnMenuSelectedListener(new OnMenuSelectedListener() {
                         @Override
                         public void onMenuSelected(int index) {
-//                            Map
-                            if (index == 0) {
-                                transitToOtherActivity(MapActivity.class);
 //                            Feedback
-                            } else if (index == 1) {
+                            if (index == 0) {
                                 Intent intent = new Intent(getApplicationContext(), LogoutActivity.class);
                                 intent.putExtra("username", myUser.getUsername());
                                 startActivity(intent);
 //                            Favorites
-                            } else if (index == 2) {
+                            } else if (index == 1) {
                                 transitToOtherActivity(SearchBarActivity.class);
 //                            Crowd Checker
-                            } else if (index == 3) {
+                            } else if (index == 2) {
                                 transitToOtherActivity(FavouritesActivity.class);
-                            } else if (index == 4) {
+                            } else if (index == 3) {
                                 Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
                                 intent.putExtra("userInfo", myUser);
                                 startActivity(intent);
                             }
-
                         }
                     });
 //        Retrieves user's information from the database.

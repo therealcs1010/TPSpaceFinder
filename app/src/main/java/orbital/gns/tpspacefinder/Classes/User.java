@@ -7,14 +7,14 @@ import java.util.HashSet;
 public class User implements Serializable {
 
     private String username, email, password, gender;
-    public HashSet<String> favouriteLocations;
+    public HashMap<String, Boolean> favouriteLocations;
 
     public User(String username, String email, String password, String gender) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.gender = gender;
-        this.favouriteLocations = new HashSet<>();
+        this.favouriteLocations = new HashMap<>();
     }
 
     public User() {

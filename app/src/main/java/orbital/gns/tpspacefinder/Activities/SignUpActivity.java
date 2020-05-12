@@ -14,6 +14,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +29,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
+    private String name, email, password, gender;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,58 +76,35 @@ public class SignUpActivity extends AppCompatActivity {
         EditText passwordField = findViewById(R.id.passwordField);
 
 //        Retrieves the name, email and password from the user.
-        String name = nameField.getText().toString();
-        String email = emailField.getText().toString();
-        String password = passwordField.getText().toString();
-        String gender;
+        name = nameField.getText().toString();
+        email = emailField.getText().toString();
+        password = passwordField.getText().toString();
         if (genderButton.isChecked()) {
             gender = "Female";
         } else {
             gender = "Male";
         }
 
-        if (getAuthentication(name, email, password)) {
-//        If account is successfully created, then can proceed to action page.
-            uploadDetailsToFirebase(name, email, password, gender);
-            Intent intent = new Intent(getApplicationContext(), ActionPageActivity.class);
-            startActivity(intent);
-            finish();
-        }
+        getAuthentication();
+//        If account is successfully created, then can proceed to action page
+
 
     }
 
-    /**
-     * Uploads the details to Firebase Database for easy referencing.
-     * @param name name provided by the user.
-     * @param email email provided by the user.
-     * @param password password provided by the user.
-     * @param gender gender provided by the user.
-     */
-    private void uploadDetailsToFirebase(String name, String email, String password, String gender) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        user = mAuth.getCurrentUser();
-        if (user == null) {
-            Log.d("debug", "No such user found");
-            return;
-        }
-        String uid = user.getUid();
-        DatabaseReference myRef = database.getReference("/users/" + uid);
-        myRef.setValue(new User(name, email, password, gender));
-        Log.d("debug", "Uploaded to firebase database");
-    }
 
     /**
      * Attempts to authenticate with Firebase.
-     * @param name name filled by the user.
-     * @param email email filled by the user.
-     * @param password password filled by the user.
      * @return true if successful authentication, false if otherwise.
      */
-    private boolean getAuthentication(String name, String email, String password) {
+    private void getAuthentication() {
         //        Ensures that the fields are all complete before proceeding
         if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
-            return false;
+            return;
+        }
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(), "Please use a longer password", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 //        Get the details of the user and authenticate with Firebase.
@@ -134,21 +113,35 @@ public class SignUpActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 //                If successful, it will proceed to the action page.
                 if (task.isSuccessful()) {
-                    FirebaseUser user = mAuth.getCurrentUser();
-//                    Or else it will return and print an error message.
+                    Toast.makeText(getApplicationContext(), "Sign up approved. Please wait a second.", Toast.LENGTH_SHORT).show();
+                    uploadDetailsToFirebase();
+                    //                    Or else it will return and print an error message.
                 } else {
                     Log.d("debug", "Task failed");
                     Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email, password);
-
-        user = mAuth.getCurrentUser();
-        if (user != null)
-        Log.d("debug", user.getUid());
-        return user != null;
-
     }
+
+    /**
+     * Uploads the details to Firebase Database for easy referencing.
+     */
+    private void uploadDetailsToFirebase() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        user = mAuth.getCurrentUser();
+        String uid = user.getUid();
+        DatabaseReference myRef = database.getReference("/users/" + uid);
+        myRef.setValue(new User(name, email, password, gender)).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Intent intent = new Intent(getApplicationContext(), ActionPageActivity.class);
+                startActivity(intent);
+                finish();
+                Log.d("debug", "yay");
+            }
+        });
+        Log.d("debug", "Uploaded to firebase database");
+    }
+
 }

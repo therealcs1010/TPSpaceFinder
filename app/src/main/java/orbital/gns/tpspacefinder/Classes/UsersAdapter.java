@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +19,11 @@ import orbital.gns.tpspacefinder.R;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder> implements Filterable {
 
-    Context context;
-    ArrayList<String> locations;
-    ArrayList<String> locationsfull;
-    int [] images = {R.drawable.shortcircuit, R.drawable.breadboard, R.drawable.businesspark, R.drawable.designerpad, R.drawable.flavours, R.drawable.triplets, R.drawable.mcdonalds,
+    private Context context;
+    private ArrayList<String> locations;
+    private ArrayList<String> locationsfull;
+
+    private int [] images = {R.drawable.shortcircuit, R.drawable.breadboard, R.drawable.businesspark, R.drawable.designerpad, R.drawable.flavours, R.drawable.triplets, R.drawable.mcdonalds,
     R.drawable.subway, R.drawable.bistrolab, R.drawable.sugar, R.drawable.canopy, R.drawable.toptable};
 
     public UsersAdapter(Context ct, ArrayList<String> locations) {
@@ -80,6 +80,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
                 break;
             case "The Top Table" :
                 holder.locationImage.setImageResource(images[11]);
+                break;
+            default :
                 break;
 
         }
