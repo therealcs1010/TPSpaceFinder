@@ -19,8 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
 
 import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
@@ -28,8 +29,7 @@ import orbital.gns.tpspacefinder.R;
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private String name, email, password, gender;
+    private String name, email, password, gender, confirmPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +74,14 @@ public class SignUpActivity extends AppCompatActivity {
         EditText nameField = findViewById(R.id.nameField);
         EditText emailField = findViewById(R.id.emailField);
         EditText passwordField = findViewById(R.id.passwordField);
+        EditText confirmPassWordField = findViewById(R.id.confirmPasswordField);
 
 //        Retrieves the name, email and password from the user.
         name = nameField.getText().toString();
         email = emailField.getText().toString();
         password = passwordField.getText().toString();
+        confirmPassword = confirmPassWordField.getText().toString();
+
         if (genderButton.isChecked()) {
             gender = "Female";
         } else {
@@ -86,19 +89,17 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         getAuthentication();
-//        If account is successfully created, then can proceed to action page
-
-
     }
 
 
     /**
-     * Attempts to authenticate with Firebase.
-     * @return true if successful authentication, false if otherwise.
+     * Attempts to authenticate with Firebase. Checks if the username, email and password field is empty,
+     * then checks if the password matches. Then ensures that the password is at least 6 characters. If so, attempts to
+     * create a new user.
      */
     private void getAuthentication() {
         //        Ensures that the fields are all complete before proceeding
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        if (name.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || !password.contentEquals(confirmPassword)) {
             Toast.makeText(getApplicationContext(), "Authentication failed.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -125,14 +126,17 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     /**
-     * Uploads the details to Firebase Database for easy referencing.
+     * Uploads the details to Firebase Firestore for easy referencing.
      */
     private void uploadDetailsToFirebase() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        user = mAuth.getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        assert user != null;
         String uid = user.getUid();
-        DatabaseReference myRef = database.getReference("/users/" + uid);
-        myRef.setValue(new User(name, email, password, gender)).addOnSuccessListener(new OnSuccessListener<Void>() {
+        User currentUser = new User(name, email, password, gender);
+//        HashMap<String, Object> firestoreDocument = currentUser.getfireStoreDocument();
+        db.collection("Users").document(uid).set(currentUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Intent intent = new Intent(getApplicationContext(), ActionPageActivity.class);

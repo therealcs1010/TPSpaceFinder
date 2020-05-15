@@ -1,72 +1,69 @@
 package orbital.gns.tpspacefinder.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
+import orbital.gns.tpspacefinder.Classes.FirebasePackage;
 import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseDatabase database;
-    private DatabaseReference myReference;
+    private FirebasePackage firebase;
     private User myUser;
 
     private EditText nameField;
     private EditText emailField;
     private EditText passwordField;
+    private ImageButton backButton;
+    private ToggleButton genderField;
+    private Button updateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_profile);
-//        Authenticate
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        assert user != null;
-
-//        Retrieve user information
-        myUser = (User) Objects.requireNonNull(getIntent().getExtras()).get("userInfo");
-        database = FirebaseDatabase.getInstance();
-        myReference = database.getReference("users");
-
         nameField = findViewById(R.id.nameField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
+        genderField = findViewById(R.id.genderButton);
+        backButton = findViewById(R.id.backButton);
+        updateButton = findViewById(R.id.updateButton);
 
-        final ToggleButton genderField = findViewById(R.id.genderButton);
-        ImageButton backButton = findViewById(R.id.backButton);
+
+//        Authenticate
+        firebase = new FirebasePackage();
+        Log.d("debug", firebase.getUid());
+//        Retrieve user information
+        Bundle bundle = this.getIntent().getExtras();
+        assert bundle != null;
+        myUser = (User) bundle.getSerializable("user");
+        initializeFields();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         backButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                UpdateProfileActivity.super.onBackPressed();
+                finish();
             }
         });
-
-        Button updateButton = findViewById(R.id.updateButton);
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,16 +71,12 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
-        initializeFields(genderField);
-
-
     }
 
     /**
      * Fills in all the parameters with the user's profile information.
-     * @param genderField The gender button showing either male or female.
      */
-    private void initializeFields(ToggleButton genderField) {
+    private void initializeFields() {
         if (myUser.getGender().equals("Male")) {
             genderField.setChecked(false);
         } else {
@@ -109,11 +102,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
         myUser.setUsername(name);
         myUser.setGender(gender);
 
-        Log.d("debug", "smthin failed");
-        myReference.child(user.getUid()).setValue(myUser).addOnSuccessListener(new OnSuccessListener<Void>() {
+        firebase.database.collection("Users").document(firebase.getUid()).set(myUser)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(@NonNull Void T) {
-                //Do whatever
                 Toast.makeText(getApplicationContext(), "Successfully updated!", Toast.LENGTH_SHORT).show();
             }
         });

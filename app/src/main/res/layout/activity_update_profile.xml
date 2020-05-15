@@ -8,7 +8,7 @@
     tools:context=".Activities.UpdateProfileActivity">
 
     <ImageButton
-        android:id="@+id/backButton2"
+        android:id="@+id/backButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"

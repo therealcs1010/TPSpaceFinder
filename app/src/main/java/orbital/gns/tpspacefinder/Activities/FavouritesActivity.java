@@ -20,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import orbital.gns.tpspacefinder.Classes.FirebasePackage;
 import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.Classes.UsersAdapter;
 import orbital.gns.tpspacefinder.R;
@@ -32,10 +33,8 @@ public class FavouritesActivity extends AppCompatActivity implements SearchView.
     private UsersAdapter usersAdapter;
     private ImageButton backButton;
 
-//    Firebase authentication
-    private FirebaseAuth mAuth;
-    private FirebaseUser user;
-    private FirebaseDatabase database;
+//    Package containing the firebase resources
+    private FirebasePackage firebase;
 
 //    User information
     private User myUser;
@@ -45,16 +44,12 @@ public class FavouritesActivity extends AppCompatActivity implements SearchView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourites);
-        setUpLayout();
-        getUserInformationFromDatabase();
 
-        usersFavouriteLocation = new ArrayList<>();
-        usersFavouriteLocation.add("The Short Circuit");
-        usersFavouriteLocation.add("The Bread Board");
-        usersFavouriteLocation.add("The Business Park");
-        usersFavouriteLocation.add("The Designer Pad");
-        usersFavouriteLocation.add("The Flavours");
-        usersFavouriteLocation.add("TripletS");
+        recyclerView = findViewById(R.id.recyclerView);
+        searchView = findViewById(R.id.searchView);
+        backButton = findViewById(R.id.backButton);
+
+        firebase = new FirebasePackage();
 
         usersAdapter = new UsersAdapter(this, usersFavouriteLocation);
         recyclerView.setAdapter(usersAdapter);
@@ -69,32 +64,6 @@ public class FavouritesActivity extends AppCompatActivity implements SearchView.
             }
         });
     }
-
-    private void setUpLayout() {
-        recyclerView = findViewById(R.id.recyclerView);
-        searchView = findViewById(R.id.searchView);
-        backButton = findViewById(R.id.backButton);
-        mAuth = FirebaseAuth.getInstance();
-        user = mAuth.getCurrentUser();
-        database = FirebaseDatabase.getInstance();
-    }
-
-
-    private void getUserInformationFromDatabase() {
-        database.getReference("users/" + user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("debug", dataSnapshot.toString());
-                myUser = dataSnapshot.getValue(User.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("debug", "Failed to read value");
-            }
-        });
-    }
-
 
     @Override
     public boolean onQueryTextSubmit(String query) {

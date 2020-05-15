@@ -1,104 +1,93 @@
 package orbital.gns.tpspacefinder.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 
+import orbital.gns.tpspacefinder.Classes.FirebasePackage;
 import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
 
 public class ActionPageActivity extends AppCompatActivity {
 
-    private User myUser;
-
+    private FirebasePackage firebase;
+    private Intent intent;
+    private User myUser = new User();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_action_page);
-
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            Intent intent = new Intent(this, StartActivity.class);
+        Log.d("debug", "wpotes");
+        firebase = new FirebasePackage();
+        if (!firebase.isAuthenticated()) {
             Log.d("debug", "User not authenticated");
+            intent = new Intent(getApplicationContext(), StartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            finish();
-        } else {
-            CircleMenu circleMenu = findViewById(R.id.circleMenu);
-            circleMenu.setMainMenu(R.color.fadedwhite, R.drawable.menu, R.drawable.menu)
-                    .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
-                    .addSubMenu(R.color.fadedpalette3, R.drawable.search)
-                    .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
-                    .addSubMenu(R.color.fadedpalette5, R.drawable.profile)
-                    .setOnMenuSelectedListener(new OnMenuSelectedListener() {
-                        @Override
-                        public void onMenuSelected(int index) {
-//                            Feedback
-                            if (index == 0) {
-                                Intent intent = new Intent(getApplicationContext(), LogoutActivity.class);
-                                intent.putExtra("username", myUser.getUsername());
-                                startActivity(intent);
-//                            Favorites
-                            } else if (index == 1) {
-                                transitToOtherActivity(SearchBarActivity.class);
-//                            Crowd Checker
-                            } else if (index == 2) {
-                                transitToOtherActivity(FavouritesActivity.class);
-                            } else if (index == 3) {
-                                Intent intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
-                                intent.putExtra("userInfo", myUser);
-                                startActivity(intent);
-                            }
-                        }
-                    });
-//        Retrieves user's information from the database.
-            getUserInformationFromFirebase(user);
-
+//            transitToOtherActivity(intent, true);
         }
-    }
+        else {
+            Log.d("debug", "what");
+            firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    myUser = documentSnapshot.toObject(User.class);
+                    Log.d("debug", "woo");
+                }
+            });
+        }
 
-    /**
-     * Get user's information from Firebase.
-     * @param user The user who is logged in.
-     */
-    private void getUserInformationFromFirebase(FirebaseUser user) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        database.getReference("users/" + user.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("debug", dataSnapshot.toString());
-                  myUser = dataSnapshot.getValue(User.class);
-//                    Log.d("debug", currentUser.getUsername());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Log.d("debug", "Failed to read value");
-            }
-        });
+        CircleMenu circleMenu = findViewById(R.id.circleMenu);
+        circleMenu.setMainMenu(R.color.fadedwhite, R.drawable.menu, R.drawable.menu)
+                .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
+                .addSubMenu(R.color.fadedpalette3, R.drawable.search)
+                .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
+                .addSubMenu(R.color.fadedpalette5, R.drawable.profile)
+                .setOnMenuSelectedListener(new OnMenuSelectedListener() {
+                    @Override
+                    public void onMenuSelected(int index) {
+//                            Feedback
+                        if (index == 0) {
+                            intent = new Intent(getApplicationContext(), LogoutActivity.class);
+//                            Search for a specific location
+                        } else if (index == 1) {
+                            intent = new Intent(getApplicationContext(), SearchBarActivity.class);
+//                            Favourite locations
+                        } else if (index == 2) {
+                            intent = new Intent(getApplicationContext(), FavouritesActivity.class);
+//                            Updating profile
+                        } else if (index == 3) {
+                            intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
+                        }
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("user", myUser);
+                        intent.putExtras(bundle);
+                        transitToOtherActivity(intent, false);
+                    }
+                });
     }
 
     /**
      * Basic function to transition to another activity.
-     * @param next The next class to be used.
+     * @param intent The intent to be used.
+     * @param finish A variable to check if finish has to be called.
      */
-    private void transitToOtherActivity(Class next) {
-        Intent intent = new Intent(this, next);
+    private void transitToOtherActivity(Intent intent, boolean finish) {
         startActivity(intent);
+        if (finish) {
+            finish();
+        }
     }
+
 
 
 }
