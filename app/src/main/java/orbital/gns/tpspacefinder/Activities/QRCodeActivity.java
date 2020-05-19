@@ -142,6 +142,7 @@ public class QRCodeActivity extends AppCompatActivity {
                         firebase.database.collection("Locations").document(currentLocation.getName()).set(currentLocation);
                         myUser.seatTaken = result;
                         firebase.userReference.set(myUser);
+                        Toast.makeText(getApplicationContext(), "You have selected " + currentLocation.getName() + " seat no : " + res[2], Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
