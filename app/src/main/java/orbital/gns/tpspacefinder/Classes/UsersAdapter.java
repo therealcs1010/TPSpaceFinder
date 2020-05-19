@@ -28,6 +28,8 @@ import orbital.gns.tpspacefinder.R;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder> implements Filterable {
 
     private FirebasePackage firebase;
+    private LocationPackage locationPackage;
+
     private Context context;
     private ArrayList<String> locations;
     private ArrayList<String> locationsFull;
@@ -40,6 +42,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
         this.locations = locations;
         this.locationsFull = new ArrayList<>(locations);
         this.context = ct;
+        locationPackage = new LocationPackage();
         firebase = new FirebasePackage();
         currentLocationPicked = new Location();
     }
@@ -56,53 +59,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
     public void onBindViewHolder(@NonNull final UsersAdapter.MyViewHolder holder, final int position) {
         final String locationName = locations.get(position);
         holder.locationTextView.setText(locationName);
-        switch(locationName) {
-            case "The Short Circuit" :
-               holder.locationImage.setImageResource(images[0]);
-               break;
-            case "The Bread Board" :
-                holder.locationImage.setImageResource(images[1]);
-                break;
-            case "The Business Park" :
-                holder.locationImage.setImageResource(images[2]);
-                break;
-            case "The Designer Pad" :
-                holder.locationImage.setImageResource(images[3]);
-                break;
-            case "The Flavours" :
-                holder.locationImage.setImageResource(images[4]);
-                break;
-            case "TripletS" :
-                holder.locationImage.setImageResource(images[5]);
-                break;
-            case "McDonald's" :
-                holder.locationImage.setImageResource(images[6]);
-                break;
-            case "Subway" :
-                holder.locationImage.setImageResource(images[7]);
-                break;
-            case "Bistro Lab" :
-                holder.locationImage.setImageResource(images[8]);
-                break;
-            case "Sugarloaf" :
-                holder.locationImage.setImageResource(images[9]);
-                break;
-            case "Canopy Coffee Club Café" :
-                holder.locationImage.setImageResource(images[10]);
-                break;
-            case "The Top Table" :
-                holder.locationImage.setImageResource(images[11]);
-                break;
-            default :
-                break;
-        }
+        holder.locationImage.setImageResource(locationPackage.allLocationsDrawable.get(locationName));
 
         holder.mainLayout.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
                  final Intent intent = new Intent(context, LocationDetailsActivity.class);
                  final Bundle bundle = new Bundle();
-                 bundle.putSerializable("Image", images[position]);
                  firebase.database.collection("Locations").document(locationName).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                      @Override
                      public void onSuccess(DocumentSnapshot documentSnapshot) {

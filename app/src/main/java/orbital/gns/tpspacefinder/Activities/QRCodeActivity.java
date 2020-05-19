@@ -180,7 +180,7 @@ public class QRCodeActivity extends AppCompatActivity {
             return false;
         }
         String location = stringResultArray[0];
-        return locationEnum.allLocations.containsKey(location);
+        return locationEnum.allLocationsLatLng.containsKey(location);
     }
 
 }

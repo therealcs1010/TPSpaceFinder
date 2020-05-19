@@ -5,12 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ImageButton;
 import android.widget.SearchView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -40,7 +35,7 @@ public class SearchBarActivity extends AppCompatActivity implements SearchView.O
         LocationPackage locationEnum = new LocationPackage();
         setUpLayout();
 
-        allLocations = new ArrayList<>(locationEnum.allLocations.keySet());
+        allLocations = new ArrayList<>(locationEnum.allLocationsLatLng.keySet());
         usersAdapter = new UsersAdapter(this, allLocations);
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager((this)));

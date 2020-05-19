@@ -2,6 +2,8 @@ package orbital.gns.tpspacefinder.Activities;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,9 +15,15 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 
+import java.util.Objects;
+
+import orbital.gns.tpspacefinder.Classes.FirebasePackage;
 import orbital.gns.tpspacefinder.Classes.Location;
 import orbital.gns.tpspacefinder.Classes.LocationPackage;
+import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
 
 
@@ -24,35 +32,76 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     private Location currentLocation;
     private ImageView locationImageView;
     private TextView locationName;
+    private Button favouritesButton;
     private MapView mapView;
-    private GoogleMap gmap;
-    private LocationPackage locationPackage;
-    private LatLng currentLatLng = new LatLng(0,0);
 
+    private GoogleMap gmap;
+
+    private FirebasePackage firebase;
+    private LocationPackage locationPackage;
+
+    private LatLng currentLatLng = new LatLng(0,0);
+    private User myUser;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        firebase = new FirebasePackage();
         locationPackage = new LocationPackage();
-        setContentView(R.layout.activity_location_details);
-        setItemsToIds();
+
         Bundle bundle = this.getIntent().getExtras();
         assert bundle != null;
-
         currentLocation = (Location) bundle.getSerializable("CurrentLocationDetails");
-        currentLatLng = locationPackage.allLocations.get(currentLocation.getName());
-        int locationResource = (int) bundle.getSerializable("Image");
 
-        locationImageView.setImageResource(locationResource);
+        setContentView(R.layout.activity_location_details);
+        setItemsToIds();
+        generateLocationDetails(savedInstanceState, bundle);
+        firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                myUser = documentSnapshot.toObject(User.class);
+                if (myUser.favouriteLocations.contains(currentLocation.getName())) {
+                    favouritesButton.setBackgroundResource(R.drawable.filledheart);
+                }
+            }
+        });
+
+        favouritesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Objects.equals(favouritesButton.getBackground().getConstantState(), getResources().getDrawable(R.drawable.emptyheart).getConstantState())) {
+                    favouritesButton.setBackgroundResource(R.drawable.filledheart);
+                    myUser.favouriteLocations.add(currentLocation.getName());
+                } else if (Objects.equals(favouritesButton.getBackground().getConstantState(), getResources().getDrawable(R.drawable.filledheart).getConstantState())) {
+                    favouritesButton.setBackgroundResource(R.drawable.emptyheart);
+                    myUser.favouriteLocations.remove(currentLocation.getName());
+                } else {
+                    Log.d("debug", "Error");
+                }
+                firebase.userReference.set(myUser);
+            }
+        });
+    }
+
+    /**
+     * This function generates the information to be displayed on the screen. It works by retrieving the location from the action page.
+     * Then it retrieves the coordinates to be used in the map from the LocationPackage class. It sets the imageView to display the correct
+     * location image.
+     * @param savedInstanceState
+     * @param bundle
+     */
+    private void generateLocationDetails(Bundle savedInstanceState, Bundle bundle) {
+        currentLatLng = locationPackage.allLocationsLatLng.get(currentLocation.getName());
+        locationImageView.setImageResource(locationPackage.allLocationsDrawable.get(currentLocation.getName()));
         locationName.setText(currentLocation.getName());
         Bundle mapViewBundle = null;
+
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAP_VIEW_BUNDLE_KEY);
         }
-        mapView = findViewById(R.id.map);
+
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);
-
     }
 
     /**
@@ -62,6 +111,7 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
         locationImageView = findViewById(R.id.locationImageView);
         locationName = findViewById(R.id.locationName);
         mapView = findViewById(R.id.map);
+        favouritesButton = findViewById(R.id.favouritesButton);
     }
 
     @Override
@@ -76,6 +126,7 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
         mapView.onSaveInstanceState(mapViewBundle);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -116,4 +167,6 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                 .title(currentLocation.getName()));
         gmap.moveCamera(CameraUpdateFactory.newLatLng(currentLatLng));
     }
+
+
 }

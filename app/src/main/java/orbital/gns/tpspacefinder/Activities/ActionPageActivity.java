@@ -88,6 +88,13 @@ public class ActionPageActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             transitToOtherActivity(intent, true);
             finish();
+        } else {
+            firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    myUser = documentSnapshot.toObject(User.class);
+                }
+            });
         }
     }
 
