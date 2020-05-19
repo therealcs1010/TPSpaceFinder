@@ -7,16 +7,6 @@
     android:background="@drawable/bookbackground"
     tools:context=".Activities.UpdateProfileActivity">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/profileButton"
         android:layout_width="wrap_content"
@@ -25,25 +15,25 @@
         android:gravity="center"
         android:text="Profile"
         android:textAlignment="gravity"
-        android:textColor="@color/palette2"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
         android:id="@+id/updateButton"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/circularsidepink"
         android:text="Update"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/profileButton"
-        app:layout_constraintStart_toEndOf="@+id/profileButton"
-        app:layout_constraintTop_toTopOf="@+id/profileButton" />
-
+        app:layout_constraintEnd_toEndOf="@+id/genderButton"
+        app:layout_constraintStart_toStartOf="@+id/genderColumn"
+        app:layout_constraintTop_toBottomOf="@+id/genderButton" />
 
     <TextView
         android:id="@+id/nameColumn"
@@ -114,6 +104,7 @@
         android:inputType="textPersonName"
         android:paddingEnd="5dp"
         android:textAlignment="viewEnd"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/nameColumn"
         app:layout_constraintTop_toBottomOf="@+id/profileButton"
@@ -130,6 +121,7 @@
         android:inputType="textEmailAddress"
         android:paddingEnd="5dp"
         android:textAlignment="viewEnd"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/emailColumn"
         app:layout_constraintEnd_toEndOf="@+id/nameField"
         app:layout_constraintHorizontal_bias="0.0"
@@ -147,6 +139,7 @@
         android:paddingEnd="5dp"
         android:text="******"
         android:textAlignment="viewEnd"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@+id/passwordColumn"
         app:layout_constraintEnd_toEndOf="@+id/emailField"
         app:layout_constraintStart_toEndOf="@+id/passwordColumn"
@@ -160,6 +153,7 @@
         android:paddingEnd="5dp"
         android:text="ToggleButton"
         android:textAlignment="viewEnd"
+        android:textColor="@android:color/white"
         android:textOff="M"
         android:textOn="F"
         app:layout_constraintBottom_toBottomOf="@+id/genderColumn"

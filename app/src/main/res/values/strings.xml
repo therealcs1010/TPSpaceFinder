@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TPSpaceFinder</string>
+    <string name="title_activity_maps">Map</string>
+
 </resources>

@@ -4,11 +4,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 public class Location implements Serializable {
-    private String name;
-    private HashMap<String, Boolean> seats;
-    private int seatsAvailable;
-    private int seatsTaken;
-    private double seatsOccupancy;
+    private String name = "";
+    public HashMap<String, Boolean> seats = new HashMap<>();
+    public int seatsAvailable = 0;
+    public int seatsTaken = 0;
+    public double seatsOccupancy = 0;
 
     public Location() {
 
@@ -18,8 +18,9 @@ public class Location implements Serializable {
         this.name = name;
         seats = new HashMap<>();
         this.seatsAvailable = seatsAvailable;
-        this.seatsOccupancy = 0.0;
         this.seatsTaken = 0;
+        this.seatsOccupancy = 0.0;
+
     }
 
     public int locationPopularity() {

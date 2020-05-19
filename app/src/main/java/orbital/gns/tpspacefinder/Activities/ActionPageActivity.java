@@ -7,13 +7,12 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.hitomi.cmlibrary.CircleMenu;
 import com.hitomi.cmlibrary.OnMenuSelectedListener;
 
 import orbital.gns.tpspacefinder.Classes.FirebasePackage;
+import orbital.gns.tpspacefinder.Classes.LocationPackage;
 import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
 
@@ -22,58 +21,74 @@ public class ActionPageActivity extends AppCompatActivity {
     private FirebasePackage firebase;
     private Intent intent;
     private User myUser = new User();
+    private String result = "";
+    private LocationPackage locationEnum;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_action_page);
-        Log.d("debug", "wpotes");
         firebase = new FirebasePackage();
+        locationEnum = new LocationPackage();
+
         if (!firebase.isAuthenticated()) {
-            Log.d("debug", "User not authenticated");
             intent = new Intent(getApplicationContext(), StartActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            startActivity(intent);
-//            transitToOtherActivity(intent, true);
+            transitToOtherActivity(intent, true);
+            finish();
         }
         else {
-            Log.d("debug", "what");
             firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     myUser = documentSnapshot.toObject(User.class);
-                    Log.d("debug", "woo");
                 }
             });
-        }
-
-        CircleMenu circleMenu = findViewById(R.id.circleMenu);
-        circleMenu.setMainMenu(R.color.fadedwhite, R.drawable.menu, R.drawable.menu)
-                .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
-                .addSubMenu(R.color.fadedpalette3, R.drawable.search)
-                .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
-                .addSubMenu(R.color.fadedpalette5, R.drawable.profile)
-                .setOnMenuSelectedListener(new OnMenuSelectedListener() {
-                    @Override
-                    public void onMenuSelected(int index) {
+            setContentView(R.layout.activity_action_page);
+            CircleMenu circleMenu = findViewById(R.id.circleMenu);
+            circleMenu.setMainMenu(R.color.fadedwhite, R.drawable.menu, R.drawable.menu)
+                    .addSubMenu(R.color.fadedpalette2, R.drawable.signout)
+                    .addSubMenu(R.color.fadedpalette3, R.drawable.search)
+                    .addSubMenu(R.color.fadedpalette4, R.drawable.favourites)
+                    .addSubMenu(R.color.fadedpalette5, R.drawable.profile)
+                    .addSubMenu(R.color.fadedpalette1, R.drawable.camera)
+                    .setOnMenuSelectedListener(new OnMenuSelectedListener() {
+                        @Override
+                        public void onMenuSelected(int index) {
 //                            Feedback
-                        if (index == 0) {
-                            intent = new Intent(getApplicationContext(), LogoutActivity.class);
+                            if (index == 0) {
+                                intent = new Intent(getApplicationContext(), LogoutActivity.class);
 //                            Search for a specific location
-                        } else if (index == 1) {
-                            intent = new Intent(getApplicationContext(), SearchBarActivity.class);
+                            } else if (index == 1) {
+                                intent = new Intent(getApplicationContext(), SearchBarActivity.class);
 //                            Favourite locations
-                        } else if (index == 2) {
-                            intent = new Intent(getApplicationContext(), FavouritesActivity.class);
+                            } else if (index == 2) {
+                                intent = new Intent(getApplicationContext(), FavouritesActivity.class);
 //                            Updating profile
-                        } else if (index == 3) {
-                            intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
+                            } else if (index == 3) {
+                                intent = new Intent(getApplicationContext(), UpdateProfileActivity.class);
+//                            Scanning
+                            } else if (index == 4) {
+                                Log.d("debug", "yeet");
+                                intent = new Intent(getApplicationContext(), QRCodeActivity.class);
+                            }
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("user", myUser);
+                            intent.putExtras(bundle);
+                            transitToOtherActivity(intent, false);
                         }
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("user", myUser);
-                        intent.putExtras(bundle);
-                        transitToOtherActivity(intent, false);
-                    }
-                });
+                    });
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!firebase.isAuthenticated()) {
+            intent = new Intent(getApplicationContext(), StartActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            transitToOtherActivity(intent, true);
+            finish();
+        }
     }
 
     /**
@@ -87,7 +102,5 @@ public class ActionPageActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
 
 }

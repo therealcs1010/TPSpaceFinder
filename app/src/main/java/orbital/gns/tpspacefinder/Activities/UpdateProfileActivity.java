@@ -35,43 +35,29 @@ public class UpdateProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Authenticate
+        firebase = new FirebasePackage();
+//        Retrieve user information
+        Bundle bundle = this.getIntent().getExtras();
+        assert bundle != null;
+        myUser = (User) bundle.getSerializable("user");
+
         setContentView(R.layout.activity_update_profile);
         nameField = findViewById(R.id.nameField);
         emailField = findViewById(R.id.emailField);
         passwordField = findViewById(R.id.passwordField);
         genderField = findViewById(R.id.genderButton);
-        backButton = findViewById(R.id.backButton);
         updateButton = findViewById(R.id.updateButton);
-
-
-//        Authenticate
-        firebase = new FirebasePackage();
-        Log.d("debug", firebase.getUid());
-//        Retrieve user information
-        Bundle bundle = this.getIntent().getExtras();
-        assert bundle != null;
-        myUser = (User) bundle.getSerializable("user");
-        initializeFields();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        backButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateMyProfile(genderField);
             }
         });
+        initializeFields();
 
     }
+
 
     /**
      * Fills in all the parameters with the user's profile information.

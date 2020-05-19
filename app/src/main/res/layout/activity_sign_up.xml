@@ -7,16 +7,6 @@
     android:background="@drawable/bookbackground"
     tools:context=".Activities.SignUpActivity">
 
-    <ImageButton
-        android:id="@+id/backButton"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/back"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ToggleButton
         android:id="@+id/genderButton"
         android:layout_width="0dp"
