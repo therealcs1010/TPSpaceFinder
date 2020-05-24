@@ -7,7 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class FirebasePackage {
 
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     public FirebaseFirestore database;
     private FirebaseUser user;
     private String uid;
@@ -18,7 +18,6 @@ public class FirebasePackage {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
         database = FirebaseFirestore.getInstance();
-
         if (user == null) {
             uid = "";
             userReference = null;
