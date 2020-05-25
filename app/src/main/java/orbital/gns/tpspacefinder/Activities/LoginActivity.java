@@ -40,7 +40,13 @@ public class LoginActivity extends AppCompatActivity {
                 getLoginDetails();
             }
         });
-
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.super.onBackPressed();
+            }
+        });
     }
 
 

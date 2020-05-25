@@ -35,9 +35,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.MyViewHolder
     private ArrayList<String> locationsFull;
     private Location currentLocationPicked;
 
-    private int [] images = {R.drawable.shortcircuit, R.drawable.breadboard, R.drawable.businesspark, R.drawable.designerpad, R.drawable.flavours, R.drawable.triplets, R.drawable.mcdonalds,
-    R.drawable.subway, R.drawable.bistrolab, R.drawable.sugar, R.drawable.canopy, R.drawable.toptable};
-
     public UsersAdapter(Context ct, ArrayList<String> locations) {
         this.locations = locations;
         this.locationsFull = new ArrayList<>(locations);

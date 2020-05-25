@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -46,17 +47,29 @@ public class QRCodeActivity extends AppCompatActivity {
 //        Retrieve user information
         retrieveUserInformationFromFireStore();
 
+
         locationEnum = new LocationPackage();
         setContentView(R.layout.activity_qrcode);
+        Log.d("debug", "what1");
 
         scanButton = findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 IntentIntegrator intentIntegrator = new IntentIntegrator(QRCodeActivity.this);
+                Log.d("debug", "what");
                 intentIntegrator.initiateScan();
             }
         });
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                QRCodeActivity.super.onBackPressed();
+            }
+        });
+
     }
 
     private void retrieveUserInformationFromFireStore() {
@@ -89,7 +102,7 @@ public class QRCodeActivity extends AppCompatActivity {
                         finish();
                     }
                 });
-        if (myUser.seatTaken != null) {
+        if (myUser.seatTaken != "") {
             AlertDialog alert = builder.create();
             alert.setTitle("");
             alert.show();
@@ -142,18 +155,20 @@ public class QRCodeActivity extends AppCompatActivity {
                         firebase.database.collection("Locations").document(currentLocation.getName()).set(currentLocation);
                         myUser.seatTaken = result;
                         firebase.userReference.set(myUser);
-                        Toast.makeText(getApplicationContext(), "You have selected " + currentLocation.getName() + " seat no : " + res[2], Toast.LENGTH_SHORT).show();
-                        finish();
+                        Log.d("debug", "taken");
+                        Toast.makeText(getApplicationContext(), "You have selected " + currentLocation.getName() + " seat no : " + res[1], Toast.LENGTH_SHORT).show();
+//                        finish();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Something went wrong selecting seat.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     if (currentLocation.returnSeats(res[1])) {
                         firebase.database.collection("Locations").document(currentLocation.getName()).set(currentLocation);
-                        myUser.seatTaken = null;
+                        myUser.seatTaken = "";
                         firebase.userReference.set(myUser);
+                        Log.d("debug", "returned");
                     } else {
-                        Toast.makeText(getApplicationContext(), "Something went wrong.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Something went wrong returning seat.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -176,6 +191,7 @@ public class QRCodeActivity extends AppCompatActivity {
             return false;
         }
         result = intentResult.getContents();
+        Log.d("debug", result);
         stringResultArray = result.split("_");
         if (stringResultArray.length != 2) {
             return false;

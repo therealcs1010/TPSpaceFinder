@@ -1,8 +1,10 @@
 package orbital.gns.tpspacefinder.Activities;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SearchView;
 
@@ -32,7 +34,6 @@ public class FavouritesActivity extends AppCompatActivity {
 //    The recycler view in the layout
     private RecyclerView recyclerView;
     private UsersAdapter usersAdapter;
-    private ImageButton backButton;
 
 //    Package containing the firebase resources
     private FirebasePackage firebase;
@@ -44,22 +45,42 @@ public class FavouritesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favourites);
-
-        recyclerView = findViewById(R.id.recyclerView);
 
         firebase = new FirebasePackage();
 
-        Bundle bundle = this.getIntent().getExtras();
-        assert bundle != null;
-        myUser = (User) bundle.getSerializable("user");
+        setContentView(R.layout.activity_favourites);
 
-        assert myUser != null;
-        usersFavouriteLocation = new ArrayList<>(myUser.favouriteLocations);
-        usersAdapter = new UsersAdapter(this, usersFavouriteLocation);
-        recyclerView.setAdapter(usersAdapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager((this)));
+        recyclerView = findViewById(R.id.recyclerView);
+//        Bundle bundle = this.getIntent().getExtras();
+//        assert bundle != null;
+//        myUser = (User) bundle.getSerializable("user");
+//        assert myUser != null;
 
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FavouritesActivity.super.onBackPressed();
+            }
+        });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                myUser = documentSnapshot.toObject(User.class);
+                Log.d("debug", String.valueOf(myUser.favouriteLocations));
+                assert myUser != null;
+                usersFavouriteLocation = new ArrayList<>(myUser.favouriteLocations);
+                usersAdapter = new UsersAdapter(FavouritesActivity.this, usersFavouriteLocation);
+                recyclerView.setAdapter(usersAdapter);
+                recyclerView.setLayoutManager(new LinearLayoutManager((FavouritesActivity.this)));
+                Log.d("debug", "everything is ok");
+            }
+        });
+
+    }
 }

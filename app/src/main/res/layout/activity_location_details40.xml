@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.LocationDetailsActivity">
+
+<Button
+        android:id="@+id/backButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="64dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/empty_tall_divider"
+            android:orientation="vertical"
+            android:showDividers="middle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/NameAndHeartLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/fadedpalette3">
+
+
+                <TextView
+                    android:id="@+id/locationName"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:text="TextView"
+                    android:textColor="@android:color/white"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/favouritesButton"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/favouritesButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/emptyheart"
+                    android:drawablePadding="2dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/ImageConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/NameAndHeartLayout">
+
+                <ImageView
+                    android:id="@+id/locationImageView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/bistrolab" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/GoogleMapsConstraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/map"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/SeatingLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@color/fadedwhite">
+
+                <ToggleButton
+                    android:id="@+id/a0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/a1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/a0"
+                    app:layout_constraintTop_toTopOf="@id/a0" />
+
+                <ToggleButton
+                    android:id="@+id/a2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/a1"
+                    app:layout_constraintTop_toTopOf="@id/a1" />
+
+                <ToggleButton
+                    android:id="@+id/a3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/a2"
+                    app:layout_constraintTop_toTopOf="@id/a2" />
+
+                <ToggleButton
+                    android:id="@+id/a4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/a3"
+                    app:layout_constraintTop_toTopOf="@id/a3" />
+
+                <ToggleButton
+                    android:id="@+id/b0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/a0"/>
+
+                <ToggleButton
+                    android:id="@+id/b1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/b0"
+                    app:layout_constraintTop_toTopOf="@id/b0" />
+
+                <ToggleButton
+                    android:id="@+id/b2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/b1"
+                    app:layout_constraintTop_toTopOf="@id/b1" />
+
+                <ToggleButton
+                    android:id="@+id/b3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/b2"
+                    app:layout_constraintTop_toTopOf="@id/b2" />
+
+                <ToggleButton
+                    android:id="@+id/b4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/b3"
+                    app:layout_constraintTop_toTopOf="@id/b3" />
+
+                <ToggleButton
+                    android:id="@+id/c0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="80dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/c1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/c0"
+                    app:layout_constraintTop_toTopOf="@id/c0" />
+
+                <ToggleButton
+                    android:id="@+id/c2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/c1"
+                    app:layout_constraintTop_toTopOf="@id/c1" />
+
+                <ToggleButton
+                    android:id="@+id/c3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/c2"
+                    app:layout_constraintTop_toTopOf="@id/c2" />
+
+                <ToggleButton
+                    android:id="@+id/c4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/c3"
+                    app:layout_constraintTop_toTopOf="@id/c3" />
+
+                <ToggleButton
+                    android:id="@+id/d0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/c0"/>
+
+                <ToggleButton
+                    android:id="@+id/d1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/d0"
+                    app:layout_constraintTop_toTopOf="@id/d0" />
+
+                <ToggleButton
+                    android:id="@+id/d2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/d1"
+                    app:layout_constraintTop_toTopOf="@id/d1" />
+
+                <ToggleButton
+                    android:id="@+id/d3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/d2"
+                    app:layout_constraintTop_toTopOf="@id/d2" />
+
+                <ToggleButton
+                    android:id="@+id/d4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/d3"
+                    app:layout_constraintTop_toTopOf="@id/d3" />
+
+                <ToggleButton
+                    android:id="@+id/e0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="150dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/e1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/e0"
+                    app:layout_constraintTop_toTopOf="@id/e0" />
+
+                <ToggleButton
+                    android:id="@+id/e2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/e1"
+                    app:layout_constraintTop_toTopOf="@id/e1" />
+
+                <ToggleButton
+                    android:id="@+id/e3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/e2"
+                    app:layout_constraintTop_toTopOf="@id/e2" />
+
+                <ToggleButton
+                    android:id="@+id/e4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/e3"
+                    app:layout_constraintTop_toTopOf="@id/e3" />
+
+                <ToggleButton
+                    android:id="@+id/f0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/e0"/>
+
+                <ToggleButton
+                    android:id="@+id/f1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/f0"
+                    app:layout_constraintTop_toTopOf="@id/f0" />
+
+                <ToggleButton
+                    android:id="@+id/f2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/f1"
+                    app:layout_constraintTop_toTopOf="@id/f1" />
+
+                <ToggleButton
+                    android:id="@+id/f3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/f2"
+                    app:layout_constraintTop_toTopOf="@id/f2" />
+
+                <ToggleButton
+                    android:id="@+id/f4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/f3"
+                    app:layout_constraintTop_toTopOf="@id/f3" />
+
+                <ToggleButton
+                    android:id="@+id/g0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="210dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ToggleButton
+                    android:id="@+id/g1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/g0"
+                    app:layout_constraintTop_toTopOf="@id/g0" />
+
+                <ToggleButton
+                    android:id="@+id/g2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/g1"
+                    app:layout_constraintTop_toTopOf="@id/g1" />
+
+                <ToggleButton
+                    android:id="@+id/g3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/g2"
+                    app:layout_constraintTop_toTopOf="@id/g2" />
+
+                <ToggleButton
+                    android:id="@+id/g4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/g3"
+                    app:layout_constraintTop_toTopOf="@id/g3" />
+
+                <ToggleButton
+                    android:id="@+id/h0"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/g0" />
+
+                <ToggleButton
+                    android:id="@+id/h1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/h0"
+                    app:layout_constraintTop_toTopOf="@id/h0" />
+
+                <ToggleButton
+                    android:id="@+id/h2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/h1"
+                    app:layout_constraintTop_toTopOf="@id/h1" />
+
+                <ToggleButton
+                    android:id="@+id/h3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="200dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toStartOf="@id/h2"
+                    app:layout_constraintTop_toTopOf="@id/h2" />
+
+                <ToggleButton
+                    android:id="@+id/h4"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/blackseat"
+                    android:textSize="0sp"
+                    app:layout_constraintStart_toEndOf="@id/h3"
+                    app:layout_constraintTop_toTopOf="@id/h3" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

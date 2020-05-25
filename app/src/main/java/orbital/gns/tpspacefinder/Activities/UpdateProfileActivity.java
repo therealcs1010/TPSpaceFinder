@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
@@ -23,6 +24,7 @@ import orbital.gns.tpspacefinder.R;
 public class UpdateProfileActivity extends AppCompatActivity {
 
     private FirebasePackage firebase;
+    private FirebaseUser firebaseUser;
     private User myUser;
 
     private EditText nameField;
@@ -37,6 +39,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 //        Authenticate
         firebase = new FirebasePackage();
+        firebaseUser = firebase.mAuth.getCurrentUser();
 //        Retrieve user information
         Bundle bundle = this.getIntent().getExtras();
         assert bundle != null;
@@ -56,6 +59,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
         });
         initializeFields();
 
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UpdateProfileActivity.super.onBackPressed();
+            }
+        });
     }
 
 
@@ -74,10 +84,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     private void updateMyProfile(ToggleButton genderField) {
-        String name = nameField.getText().toString();
-        String email = emailField.getText().toString();
-        String password = passwordField.getText().toString();
-        String gender;
+        Toast.makeText(getApplicationContext(), "Updating information...Please do not leave this page", Toast.LENGTH_SHORT).show();
+        final String name = nameField.getText().toString();
+        final String email = emailField.getText().toString();
+        final String password = passwordField.getText().toString();
+        final String gender;
         if (genderField.isChecked()) {
             gender = "Female";
         } else {
@@ -87,12 +98,21 @@ public class UpdateProfileActivity extends AppCompatActivity {
         myUser.setPassword(password);
         myUser.setUsername(name);
         myUser.setGender(gender);
-
         firebase.database.collection("Users").document(firebase.getUid()).set(myUser)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(@NonNull Void T) {
-                Toast.makeText(getApplicationContext(), "Successfully updated!", Toast.LENGTH_SHORT).show();
+                firebaseUser.updateEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        firebaseUser.updatePassword(password).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Toast.makeText(getApplicationContext(), "Successfully updated!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
             }
         });
 

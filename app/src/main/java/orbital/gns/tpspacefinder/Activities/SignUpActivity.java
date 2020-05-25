@@ -40,7 +40,13 @@ public class SignUpActivity extends AppCompatActivity {
 
 //        Listener for the gender button
         final ToggleButton genderButton = findViewById(R.id.genderButton);
-
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SignUpActivity.super.onBackPressed();
+            }
+        });
 
 //        Listener for the sign up button
         Button signUpButton = findViewById(R.id.signUpButton);
@@ -50,6 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
                 getSignUpDetails(genderButton);
             }
         });
+
 
     }
 

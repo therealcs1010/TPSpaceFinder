@@ -1,11 +1,16 @@
 package orbital.gns.tpspacefinder.Activities;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -42,20 +47,23 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
     private LatLng currentLatLng = new LatLng(0,0);
     private User myUser;
+    private int templateUsed;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+
         firebase = new FirebasePackage();
         locationPackage = new LocationPackage();
 
         Bundle bundle = this.getIntent().getExtras();
         assert bundle != null;
         currentLocation = (Location) bundle.getSerializable("CurrentLocationDetails");
-
-        setContentView(R.layout.activity_location_details);
+        setContentViewBasedOnLayout();
         setItemsToIds();
         generateLocationDetails(savedInstanceState, bundle);
+
         firebase.userReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -68,7 +76,8 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
         favouritesButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                vibratePhone();
                 if (Objects.equals(favouritesButton.getBackground().getConstantState(), getResources().getDrawable(R.drawable.emptyheart).getConstantState())) {
                     favouritesButton.setBackgroundResource(R.drawable.filledheart);
                     myUser.favouriteLocations.add(currentLocation.getName());
@@ -81,6 +90,41 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                 firebase.userReference.set(myUser);
             }
         });
+
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LocationDetailsActivity.super.onBackPressed();
+            }
+        });
+    }
+
+    /**
+     * Vibrate phone
+     */
+    private void vibratePhone() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+//                  Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(500, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            v.vibrate(500);
+        }
+    }
+
+    /**
+     * Checks the number of seats in the chosen location, then allocate a view accordingly.
+     */
+    private void setContentViewBasedOnLayout() {
+        templateUsed = currentLocation.seats.size();
+        if (templateUsed == 40) {
+            setContentView(R.layout.activity_location_details40);
+        } else if (templateUsed == 50){
+            setContentView(R.layout.activity_location_details50);
+        } else {
+            setContentView(R.layout.activity_location_details60);
+        }
     }
 
     /**
@@ -112,18 +156,181 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
         locationName = findViewById(R.id.locationName);
         mapView = findViewById(R.id.map);
         favouritesButton = findViewById(R.id.favouritesButton);
+        if (templateUsed == 40) {
+            setButtonState(R.id.a0,"A0");
+            setButtonState(R.id.a1,"A1");
+            setButtonState(R.id.a2,"A2");
+            setButtonState(R.id.a3,"A3");
+            setButtonState(R.id.a4,"A4");
+            setButtonState(R.id.b0,"B0");
+            setButtonState(R.id.b1,"B1");
+            setButtonState(R.id.b2,"B2");
+            setButtonState(R.id.b3,"B3");
+            setButtonState(R.id.b4,"B4");
+            setButtonState(R.id.c0,"C0");
+            setButtonState(R.id.c1,"C1");
+            setButtonState(R.id.c2,"C2");
+            setButtonState(R.id.c3,"C3");
+            setButtonState(R.id.c4,"C4");
+            setButtonState(R.id.d0,"D0");
+            setButtonState(R.id.d1,"D1");
+            setButtonState(R.id.d2,"D2");
+            setButtonState(R.id.d3,"D3");
+            setButtonState(R.id.d4,"D4");
+            setButtonState(R.id.e0,"E0");
+            setButtonState(R.id.e1,"E1");
+            setButtonState(R.id.e2,"E2");
+            setButtonState(R.id.e3,"E3");
+            setButtonState(R.id.e4,"E4");
+            setButtonState(R.id.f0,"F0");
+            setButtonState(R.id.f1,"F1");
+            setButtonState(R.id.f2,"F2");
+            setButtonState(R.id.f3,"F3");
+            setButtonState(R.id.f4,"F4");
+            setButtonState(R.id.g0,"G0");
+            setButtonState(R.id.g1,"G1");
+            setButtonState(R.id.g2,"G2");
+            setButtonState(R.id.g3,"G3");
+            setButtonState(R.id.g4,"G4");
+            setButtonState(R.id.h0,"H0");
+            setButtonState(R.id.h1,"H1");
+            setButtonState(R.id.h2,"H2");
+            setButtonState(R.id.h3,"H3");
+            setButtonState(R.id.h4,"H4");
+
+        } else if (templateUsed == 50) {
+            setButtonState(R.id.a0,"A0");
+            setButtonState(R.id.a1,"A1");
+            setButtonState(R.id.a2,"A2");
+            setButtonState(R.id.a3,"A3");
+            setButtonState(R.id.a4,"A4");
+            setButtonState(R.id.a5,"A5");
+            setButtonState(R.id.a6,"A6");
+            setButtonState(R.id.a7,"A7");
+            setButtonState(R.id.a8,"A8");
+            setButtonState(R.id.a9,"A9");
+            setButtonState(R.id.b0,"B0");
+            setButtonState(R.id.b1,"B1");
+            setButtonState(R.id.b2,"B2");
+            setButtonState(R.id.b3,"B3");
+            setButtonState(R.id.b4,"B4");
+            setButtonState(R.id.b5,"B5");
+            setButtonState(R.id.b6,"B6");
+            setButtonState(R.id.b7,"B7");
+            setButtonState(R.id.b8,"B8");
+            setButtonState(R.id.b9,"B9");
+            setButtonState(R.id.c0,"C0");
+            setButtonState(R.id.c1,"C1");
+            setButtonState(R.id.c2,"C2");
+            setButtonState(R.id.c3,"C3");
+            setButtonState(R.id.c4,"C4");
+            setButtonState(R.id.c5,"C5");
+            setButtonState(R.id.c6,"C6");
+            setButtonState(R.id.c7,"C7");
+            setButtonState(R.id.c8,"C8");
+            setButtonState(R.id.c9,"C9");
+            setButtonState(R.id.d0,"D0");
+            setButtonState(R.id.d1,"D1");
+            setButtonState(R.id.d2,"D2");
+            setButtonState(R.id.d3,"D3");
+            setButtonState(R.id.d4,"D4");
+            setButtonState(R.id.d5,"D5");
+            setButtonState(R.id.d6,"D6");
+            setButtonState(R.id.d7,"D7");
+            setButtonState(R.id.d8,"D8");
+            setButtonState(R.id.d9,"D9");
+            setButtonState(R.id.e0,"E0");
+            setButtonState(R.id.e1,"E1");
+            setButtonState(R.id.e2,"E2");
+            setButtonState(R.id.e3,"E3");
+            setButtonState(R.id.e4,"E4");
+            setButtonState(R.id.e5,"E5");
+            setButtonState(R.id.e6,"E6");
+            setButtonState(R.id.e7,"E7");
+            setButtonState(R.id.e8,"E8");
+            setButtonState(R.id.e9,"E9");
+        } else {
+            setButtonState(R.id.a0,"A0");
+            setButtonState(R.id.a1,"A1");
+            setButtonState(R.id.a2,"A2");
+            setButtonState(R.id.a3,"A3");
+            setButtonState(R.id.a4,"A4");
+            setButtonState(R.id.a5,"A5");
+            setButtonState(R.id.a6,"A6");
+            setButtonState(R.id.a7,"A7");
+            setButtonState(R.id.a8,"A8");
+            setButtonState(R.id.a9,"A9");
+            setButtonState(R.id.b0,"B0");
+            setButtonState(R.id.b1,"B1");
+            setButtonState(R.id.b2,"B2");
+            setButtonState(R.id.b3,"B3");
+            setButtonState(R.id.b4,"B4");
+            setButtonState(R.id.b5,"B5");
+            setButtonState(R.id.b6,"B6");
+            setButtonState(R.id.b7,"B7");
+            setButtonState(R.id.b8,"B8");
+            setButtonState(R.id.b9,"B9");
+            setButtonState(R.id.c0,"C0");
+            setButtonState(R.id.c1,"C1");
+            setButtonState(R.id.c2,"C2");
+            setButtonState(R.id.c3,"C3");
+            setButtonState(R.id.c4,"C4");
+            setButtonState(R.id.c5,"C5");
+            setButtonState(R.id.c6,"C6");
+            setButtonState(R.id.c7,"C7");
+            setButtonState(R.id.c8,"C8");
+            setButtonState(R.id.c9,"C9");
+            setButtonState(R.id.d0,"D0");
+            setButtonState(R.id.d1,"D1");
+            setButtonState(R.id.d2,"D2");
+            setButtonState(R.id.d3,"D3");
+            setButtonState(R.id.d4,"D4");
+            setButtonState(R.id.d5,"D5");
+            setButtonState(R.id.d6,"D6");
+            setButtonState(R.id.d7,"D7");
+            setButtonState(R.id.d8,"D8");
+            setButtonState(R.id.d9,"D9");
+            setButtonState(R.id.e0,"E0");
+            setButtonState(R.id.e1,"E1");
+            setButtonState(R.id.e2,"E2");
+            setButtonState(R.id.e3,"E3");
+            setButtonState(R.id.e4,"E4");
+            setButtonState(R.id.e5,"E5");
+            setButtonState(R.id.e6,"E6");
+            setButtonState(R.id.e7,"E7");
+            setButtonState(R.id.e8,"E8");
+            setButtonState(R.id.e9,"E9");
+            setButtonState(R.id.f0,"F0");
+            setButtonState(R.id.f1,"F1");
+            setButtonState(R.id.f2,"F2");
+            setButtonState(R.id.f3,"F3");
+            setButtonState(R.id.f4,"F4");
+            setButtonState(R.id.f5,"F5");
+            setButtonState(R.id.f6,"F6");
+            setButtonState(R.id.f7,"F7");
+            setButtonState(R.id.f8,"F8");
+            setButtonState(R.id.f9,"F9");
+        }
+    }
+
+    private void setButtonState(int p, String seat) {
+        ToggleButton a1 = findViewById(p);
+        Log.d("debug", seat);
+        if (currentLocation.seats.get(seat)) {
+            a1.setBackgroundDrawable(getResources().getDrawable(R.drawable.redseat));
+        } else {
+            a1.setBackgroundDrawable(getResources().getDrawable(R.drawable.blackseat));
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
         Bundle mapViewBundle = outState.getBundle(MAP_VIEW_BUNDLE_KEY);
         if (mapViewBundle == null) {
             mapViewBundle = new Bundle();
             outState.putBundle(MAP_VIEW_BUNDLE_KEY, mapViewBundle);
         }
-
         mapView.onSaveInstanceState(mapViewBundle);
     }
 

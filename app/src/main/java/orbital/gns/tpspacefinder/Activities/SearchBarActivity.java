@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
@@ -40,7 +42,13 @@ public class SearchBarActivity extends AppCompatActivity implements SearchView.O
         recyclerView.setAdapter(usersAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager((this)));
         searchView.setOnQueryTextListener(this);
-
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SearchBarActivity.super.onBackPressed();
+            }
+        });
     }
 
     private void setUpLayout() {
@@ -59,4 +67,5 @@ public class SearchBarActivity extends AppCompatActivity implements SearchView.O
         usersAdapter.getFilter().filter(newText);
         return false;
     }
+
 }

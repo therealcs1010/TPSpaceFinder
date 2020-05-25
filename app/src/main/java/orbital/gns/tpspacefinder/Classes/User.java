@@ -11,7 +11,7 @@ public class User implements Serializable {
     private String password = "";
     private String gender = "";
     public ArrayList<String> favouriteLocations = new ArrayList<>();
-    public String seatTaken;
+    public String seatTaken = "";
 
     public User() {
 

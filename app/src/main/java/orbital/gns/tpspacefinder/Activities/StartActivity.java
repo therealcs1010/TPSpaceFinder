@@ -33,6 +33,14 @@ public class StartActivity extends AppCompatActivity {
                 getActivity(LoginActivity.class);
             }
         });
+
+        Button forgotPasswordButton = findViewById(R.id.forgetPasswordButton);
+        forgotPasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity(ForgotPasswordActivity.class);
+            }
+        });
     }
 
     /**
@@ -42,7 +50,6 @@ public class StartActivity extends AppCompatActivity {
     private void getActivity(Class nextClass) {
         Intent intent = new Intent(this, nextClass);
         startActivity(intent);
-        finish();
     }
 
 
