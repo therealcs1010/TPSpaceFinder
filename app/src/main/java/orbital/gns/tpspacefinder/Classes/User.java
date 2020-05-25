@@ -23,7 +23,6 @@ public class User implements Serializable {
         this.password = password;
         this.gender = gender;
         this.favouriteLocations = new ArrayList<>();
-        this.seatTaken = null;
     }
 
 
