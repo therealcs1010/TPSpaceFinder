@@ -1,9 +1,12 @@
 package orbital.gns.tpspacefinder.Activities;
 
 import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -28,25 +33,24 @@ import orbital.gns.tpspacefinder.R;
 
 public class QRCodeActivity extends AppCompatActivity {
 
-
+    private FirebasePackage firebase;
     private LocationPackage locationEnum;
     private String result = "";
-    FirebasePackage firebase;
     private User myUser;
     private String [] stringResultArray;
-
     private Button scanButton;
+    String CHANNEL_ID = "1001";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Request permission to use the cameras
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
+        createNotificationChannel();
 
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, PackageManager.PERMISSION_GRANTED);
         firebase = new FirebasePackage();
 //        Retrieve user information
         retrieveUserInformationFromFireStore();
-
 
         locationEnum = new LocationPackage();
         setContentView(R.layout.activity_qrcode);
@@ -80,6 +84,22 @@ public class QRCodeActivity extends AppCompatActivity {
                 buildAlertDialog();
             }
         });
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Spc";
+            String description = "wot";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     /**
@@ -155,9 +175,10 @@ public class QRCodeActivity extends AppCompatActivity {
                         firebase.database.collection("Locations").document(currentLocation.getName()).set(currentLocation);
                         myUser.seatTaken = result;
                         firebase.userReference.set(myUser);
-                        Log.d("debug", "taken");
-                        Toast.makeText(getApplicationContext(), "You have selected " + currentLocation.getName() + " seat no : " + res[1], Toast.LENGTH_SHORT).show();
-//                        finish();
+                        String seatString = "You have selected " + currentLocation.getName() + " seat no : " + res[1];
+                        Toast.makeText(getApplicationContext(), seatString, Toast.LENGTH_SHORT).show();
+                        pushNotificationToDevice(seatString);
+                        finish();
                     } else {
                         Toast.makeText(getApplicationContext(), "Something went wrong selecting seat.", Toast.LENGTH_SHORT).show();
                     }
@@ -173,6 +194,17 @@ public class QRCodeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void pushNotificationToDevice(String seatString) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo)
+                .setContentText(seatString)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(seatString))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        notificationManager.notify(100, builder.build());
     }
 
     /**

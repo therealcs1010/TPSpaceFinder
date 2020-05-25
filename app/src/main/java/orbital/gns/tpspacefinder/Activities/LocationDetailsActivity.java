@@ -1,5 +1,7 @@
 package orbital.gns.tpspacefinder.Activities;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -49,11 +53,13 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     private User myUser;
     private int templateUsed;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
+    String CHANNEL_ID = "1001";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
+        createNotificationChannel();
         firebase = new FirebasePackage();
         locationPackage = new LocationPackage();
 
@@ -80,13 +86,16 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                 vibratePhone();
                 if (Objects.equals(favouritesButton.getBackground().getConstantState(), getResources().getDrawable(R.drawable.emptyheart).getConstantState())) {
                     favouritesButton.setBackgroundResource(R.drawable.filledheart);
+                    pushNotificationToDevice("You have added " + currentLocation.getName() + " to your list of favourite locations.");
                     myUser.favouriteLocations.add(currentLocation.getName());
                 } else if (Objects.equals(favouritesButton.getBackground().getConstantState(), getResources().getDrawable(R.drawable.filledheart).getConstantState())) {
                     favouritesButton.setBackgroundResource(R.drawable.emptyheart);
+                    pushNotificationToDevice("You have removed " + currentLocation.getName() + " to your list of favourite locations.");
                     myUser.favouriteLocations.remove(currentLocation.getName());
                 } else {
                     Log.d("debug", "Error");
                 }
+
                 firebase.userReference.set(myUser);
             }
         });
@@ -98,6 +107,33 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                 LocationDetailsActivity.super.onBackPressed();
             }
         });
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "Spc";
+            String description = "wot";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void pushNotificationToDevice(String message) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
+                .setSmallIcon(R.drawable.logo)
+                .setContentText(message)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
+        notificationManager.notify(100, builder.build());
     }
 
     /**
