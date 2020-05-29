@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TPSpaceFinder</string>
     <string name="title_activity_maps">Map</string>
+    <string name="facebook_app_id">560692441303608</string>
+    <string name="fb_login_protocol_scheme">fb560692441303608</string>
 
 </resources>
