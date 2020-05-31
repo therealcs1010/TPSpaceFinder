@@ -22,6 +22,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -30,6 +31,8 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import orbital.gns.tpspacefinder.Classes.FirebasePackage;
+import orbital.gns.tpspacefinder.Classes.User;
 import orbital.gns.tpspacefinder.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -40,11 +43,15 @@ public class LoginActivity extends AppCompatActivity {
     private LoginButton facebookLoginButton;
     private AccessTokenTracker accessTokenTracker;
 
+    private FirebasePackage firebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        firebase = new FirebasePackage();
+
         FacebookSdk.sdkInitialize(getApplicationContext());
 
         facebookLoginButton = findViewById(R.id.facebookLoginButton);
@@ -119,7 +126,14 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     FirebaseUser user = mAuth.getCurrentUser();
-                    changeActivity();
+                    User myUser = new User(user.getDisplayName() , user.getEmail(), "", "Male");
+                    firebase.database.collection("Users").document(user.getUid()).set(myUser)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    changeActivity();
+                                }
+                            });
                 } else {
                     Log.d("debug", "Something went wrong");
                 }
